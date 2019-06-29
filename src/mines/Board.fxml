@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mines.MinesFX">
+   <children>
+      <AnchorPane fx:id="menu" layoutY="281.0">
+         <children>
+            <Button fx:id="restart_button" alignment="CENTER" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="31.0" prefWidth="142.0" style="-fx-background-color: #cb0003; -fx-border-color: #000000;" text="Restart" />
+            <Label layoutX="16.0" layoutY="40.0" text="width ">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Label>
+            <TextField fx:id="setWidth" layoutX="65.0" layoutY="35.0" prefHeight="31.0" prefWidth="69.0" style="-fx-background-color:transparent;" text="10" />
+            <Label layoutX="13.0" layoutY="76.0" text="height ">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Label>
+            <TextField fx:id="setHeight" layoutX="65.0" layoutY="71.0" prefHeight="31.0" prefWidth="69.0" style="-fx-background-color:transparent;" text="10" />
+            <Label layoutX="14.0" layoutY="112.0" text="mines ">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font></Label>
+            <TextField fx:id="setMines" layoutX="65.0" layoutY="107.0" prefHeight="31.0" prefWidth="69.0" style="-fx-background-color:transparent;" text="10" />
+         </children>
+      </AnchorPane>
+      <StackPane fx:id="pane" layoutX="150.0" prefHeight="700.0" prefWidth="930.0" scaleShape="false" />
+      <Label fx:id="Finish" layoutX="192.0" layoutY="23.0" prefHeight="138.0" prefWidth="558.0" textAlignment="CENTER" visible="false">
+         <font>
+            <Font name="Constantia Bold" size="96.0" />
+         </font>
+      </Label>
+      <Label layoutX="18.0" layoutY="418.0" prefHeight="21.0" prefWidth="80.0" text="max: 36x21" />
+   </children>
+</AnchorPane>

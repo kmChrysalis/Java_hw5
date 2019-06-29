@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Targil_5:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Targil_5_jar</output-path>
+    <root id="archive" name="Targil_5.jar">
+      <element id="module-output" name="Targil_5" />
+    </root>
+  </artifact>
+</component>
