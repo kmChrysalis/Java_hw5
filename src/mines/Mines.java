@@ -1,9 +1,12 @@
 package mines;
 
+import java.util.HashSet;
+import java.util.Random;
+
 public class Mines {
 
     private Place[][] field; //places array for mine field
-    private int numMines_r, numMines_s, opens; //counters for mines and opened cells
+    private int numMines, opens; //counters for mines and opened cells
     private int height, width; //size variables
     private boolean showAll = false; //showAll trigger, false by default
 
@@ -13,8 +16,7 @@ public class Mines {
         private boolean opened = false;
         private int counter = 0;
 
-        private Place() { //default builder
-        }
+        private Place() {} //default builder
     }
 
     public Mines(int height, int width, int numMines) {
@@ -27,14 +29,34 @@ public class Mines {
         }
         this.height = height;
         this.width = width;
-        numMines_r = numMines;
+        this.numMines = numMines;
+        if (numMines > 0) { //filling field with mines if constructor got some number bigger then 0
+            HashSet<Integer> Set = new HashSet<>(); //hash set is for random sets we create to exclude multiplying
+            Random rand = new Random(); //for random cells for mines
+            for (int i = 0; i < numMines; i++) {
+                Integer y = Math.abs(rand.nextInt(height)); //randomize Y value
+                Integer x = Math.abs(rand.nextInt(width)); //randomize X value
+                if (Set.isEmpty()) { //my set is saving HashCode of each random combination
+                    addMine(y, x); //add mine to game
+                    Set.add(y * height + x); //save this HashCode
+                    this.numMines--;
+                } else if (Set.contains(y * height + x)) {
+                    i--; //we got same value, so got back for one step in loop
+                } else {//set wasn't empty, but we got new value
+                    addMine(y, x); //so add this mine
+                    Set.add(y * height + x); //and save HashCode
+                    this.numMines--;
+                }
+            }
+        }
     }
+
 
     public boolean addMine(int i, int j) {
         try { //trying to add mine, but care about exception
             if (!field[i][j].mine) { //check if not mine yet
                 field[i][j].mine = true; //set flag on
-                numMines_s++; //count mines
+                numMines++; //count mines
             }
         } catch (ArrayIndexOutOfBoundsException e) {
             return false;
@@ -94,7 +116,7 @@ public class Mines {
 
     public boolean isDone() {
         /* check if (num of cells - num of mines - opened cells) equal zero and return answer */
-        return height * width - numMines_s - opens == 0;
+        return height * width - numMines - opens == 0;
     }
 
     public String get(int i, int j) {
@@ -103,9 +125,6 @@ public class Mines {
                 if (field[i][j].flag) return "F"; //or it's flag
                 else return "."; //or it's closed one
             }
-            //else if (field[i][j].mine) return "X";
-            //else if (field[i][j].counter == 0) return " "; //or there's nothing
-            //else return field[i][j].counter + ""; //or there's number
         }
         //in any other case this:
         return (field[i][j].mine) ? "X" :

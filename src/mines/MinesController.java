@@ -10,14 +10,10 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-
-import java.util.HashSet;
-import java.util.Random;
 import java.util.function.UnaryOperator;
 
 public class MinesController {
     private int height, width, mines; //variable for saving size, and mines count
-    private Random rand = new Random(); //for random cells for mines
     private GridPane grid; //grind for field
     private Mines game; //our game :)
     private Btn[][] buttons; //buttons array to be placed into grid
@@ -165,7 +161,6 @@ public class MinesController {
             }
 
             if (height > 0 && width > 0 && mines > 0) { //if variables are bigger then 0, we can go forward
-                HashSet<Integer> Set = new HashSet<>(); //hash set is for random sets we create to exclude multiplying
                 game = new Mines(height, width, mines); //create new game
                 buttons = new Btn[height][width]; //create array of buttons
                 grid = new GridPane(); //create new grid pane
@@ -177,20 +172,6 @@ public class MinesController {
                     for (int j = 0; j < width; j++) {
                         buttons[i][j] = new Btn(new Button(game.get(i, j)), i, j);
                         grid.add(buttons[i][j].b, j, i); //add this button to grid
-                    }
-                }
-
-                for (int i = 0; i < mines; i++) { //creating mines
-                    Integer y = Math.abs(rand.nextInt(height)); //randomize Y value
-                    Integer x = Math.abs(rand.nextInt(width)); //randomize X value
-                    if (Set.isEmpty()) { //my set is saving HashCode of each random combination
-                        game.addMine(y, x); //add mine to game
-                        Set.add(y * height + x); //save this HashCode
-                    } else if (Set.contains(y * height + x)) {
-                        i--; //we got same value, so got back for one step in loop
-                    } else {//set wasn't empty, but we got new value
-                        game.addMine(y, x); //so add this mine
-                        Set.add(y * height + x); //and save HashCode
                     }
                 }
                 pane.getChildren().add(grid); //add our grid to StackPane
