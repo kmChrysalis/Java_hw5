@@ -16,42 +16,42 @@ public class MinesController {
     private int height, width, mines; //variable for saving size, and mines count
     private GridPane grid; //grind for field
     private Mines game; //our game :)
-    private Btn[][] buttons; //buttons array to be placed into grid
+    private fieldButton[][] buttonsGrid; //buttonsGrid array to be placed into grid
 
-    class Btn { //my button class
-        private Button b;
+    class fieldButton { //my button class
+        private Button button;
         private int x, y; //coordinates
         private boolean flag = false; //flag toggle
 
-        private Btn(Button b, int x, int y) { //nested class button, a little bit big
-            this.b = b;
+        private fieldButton(Button button, int x, int y) { //nested class button constructor
+            this.button = button;
             this.x = x;
             this.y = y;
-            this.b.setMinSize(48, 48); //minimal size of button
-            this.b.setPrefSize(54, 54); //preferable size
-            this.b.setMaxSize(54, 54); //maximum size
+            this.button.setMinSize(48, 48); //minimal size of button
+            this.button.setPrefSize(54, 54); //preferable size
+            this.button.setMaxSize(54, 54); //maximum size
             /* get some style */
-            this.b.setStyle("-fx-background-image: url('/resources/closed.jpg');" +
+            this.button.setStyle("-fx-background-image: url('/resources/closed.jpg');" +
                     "-fx-text-fill: Black;" +
                     "-fx-border-color: Black;" +
                     "-fx-border-width: 1;" +
                     "-fx-font-size: 24;" +
                     "-fx-font-weight: bold ");
             /* and add mouse listener */
-            this.b.setOnMouseClicked(event -> {
+            this.button.setOnMouseClicked(event -> {
                 if (event.getButton() == MouseButton.SECONDARY) { //check if right button was pressed
                     flag = game.toggleFlag(this.x, this.y); //toggle flag
                     if (flag) {
-                        this.b.setText(""); //set text, and stylish
-                        this.b.setStyle("-fx-background-image: url('/resources/flag.jpg');" +
+                        this.button.setText(""); //set text, and stylish
+                        this.button.setStyle("-fx-background-image: url('/resources/flag.jpg');" +
                                 "-fx-text-fill: Black;" +
                                 "-fx-border-color: Black;" +
                                 "-fx-border-width: 1;" +
                                 "-fx-font-size: 24;" +
                                 "-fx-font-weight: bold;");
                     } else {
-                        this.b.setText(".");
-                        this.b.setStyle("-fx-background-image: url('/resources/closed.jpg');" +
+                        this.button.setText(".");
+                        this.button.setStyle("-fx-background-image: url('/resources/closed.jpg');" +
                                 "-fx-text-fill: Black;" +
                                 "-fx-border-color: Black;" +
                                 "-fx-border-width: 1;" +
@@ -61,7 +61,7 @@ public class MinesController {
                 } else { //if left button was pressed
                     if (!game.open(this.x, this.y)) { //trying to open, if false, we lost
                         shower("YOU DIED"); //using external function to open all cells, after set new bomb pic to one we pressed
-                        this.b.setStyle("-fx-background-image: url('/resources/bomb_active.jpg');" +
+                        this.button.setStyle("-fx-background-image: url('/resources/bomb_active.jpg');" +
                                 "-fx-text-fill: Black;" +
                                 "-fx-border-color: Black;" +
                                 "-fx-border-width: 1;" +
@@ -70,14 +70,14 @@ public class MinesController {
                     } else if (game.isDone()) { //check if you won
                         shower("YOU WON");
                     } else {
-                        this.b.setOnMouseClicked(null); //deactivate button we press and add styles
-                        this.b.setStyle("-fx-background-image: url('/resources/opened.jpg');" +
+                        this.button.setOnMouseClicked(null); //deactivate button we press and add styles
+                        this.button.setStyle("-fx-background-image: url('/resources/opened.jpg');" +
                                 "-fx-text-fill: Black;" +
                                 "-fx-border-color: Black;" +
                                 "-fx-border-width: 1;" +
                                 "-fx-font-size: 24;" +
                                 "-fx-font-weight: bold;");
-                        this.b.setText(game.get(this.x, this.y)); //set number for button
+                        this.button.setText(game.get(this.x, this.y)); //set number for button
                         checks(); //check neighbours
                     }
                 }
@@ -90,23 +90,23 @@ public class MinesController {
             game.setShowAll(true); //toggle showAll flag
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
-                    buttons[i][j].b.setOnMouseClicked(null); //deactivate button
+                    buttonsGrid[i][j].button.setOnMouseClicked(null); //deactivate button
                     String key = game.get(i, j); //get a key
                     if (key.equals("X")) { //if this cell is mine, set mine image
-                        buttons[i][j].b.setStyle("-fx-background-image: url('/resources/bomb_not_active.jpg');" +
+                        buttonsGrid[i][j].button.setStyle("-fx-background-image: url('/resources/bomb_not_active.jpg');" +
                                 "-fx-text-fill: Black;" +
                                 "-fx-border-color: Black;" +
                                 "-fx-border-width: 1;" +
                                 "-fx-font-size: 24;" +
                                 "-fx-font-weight: bold ");
                     } else { //if this cell not mine, it's just an opened one
-                        buttons[i][j].b.setStyle("-fx-background-image: url('/resources/opened.jpg');" +
+                        buttonsGrid[i][j].button.setStyle("-fx-background-image: url('/resources/opened.jpg');" +
                                 "-fx-text-fill: Black;" +
                                 "-fx-border-color: Black;" +
                                 "-fx-border-width: 1;" +
                                 "-fx-font-size: 24;" +
                                 "-fx-font-weight: bold;");
-                        buttons[i][j].b.setText(key); //probably with some text, or without, depends on key
+                        buttonsGrid[i][j].button.setText(key); //probably with some text, or without, depends on key
                     }
                 }
             }
@@ -116,14 +116,14 @@ public class MinesController {
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
                     if (game.isOpened(i, j)) { //if this cell is opened, set image of opened
-                        buttons[i][j].b.setStyle("-fx-background-image: url('/resources/opened.jpg');" +
+                        buttonsGrid[i][j].button.setStyle("-fx-background-image: url('/resources/opened.jpg');" +
                                 "-fx-text-fill: Black;" +
                                 "-fx-border-color: Black;" +
                                 "-fx-border-width: 1;" +
                                 "-fx-font-size: 24;" +
                                 "-fx-font-weight: bold; ");
-                        buttons[i][j].b.setText(game.get(i, j)); //set text, if it has
-                        buttons[i][j].b.setOnMouseClicked(null); //deactivate listener
+                        buttonsGrid[i][j].button.setText(game.get(i, j)); //set text, if it has
+                        buttonsGrid[i][j].button.setOnMouseClicked(null); //deactivate listener
                     }
                 }
             }
@@ -150,10 +150,10 @@ public class MinesController {
 
         restart_button.setOnAction(event -> { //create listener for restart button
             /*get size of field, but I add some bounds, in case it won't get out of screen with resolution 1920x1080 */
-            height = Integer.parseInt(setHeight.getCharacters().toString()) % 22;
-            width = Integer.parseInt(setWidth.getCharacters().toString()) % 37;
+            height = Integer.parseInt(setHeight.getText()) % 22;
+            width = Integer.parseInt(setWidth.getText()) % 37;
             /* amount of mines are bounded by field, i.e. 10x10 = 100, so <=100 mines can be placed */
-            mines = Integer.parseInt(setMines.getCharacters().toString()) % (height*width + 1);
+            mines = Integer.parseInt(setMines.getText()) % (height*width + 1);
 
             if (grid != null) { //if grid already has been created
                 grid.getChildren().clear(); //clear this grid
@@ -162,16 +162,16 @@ public class MinesController {
 
             if (height > 0 && width > 0 && mines > 0) { //if variables are bigger then 0, we can go forward
                 game = new Mines(height, width, mines); //create new game
-                buttons = new Btn[height][width]; //create array of buttons
+                buttonsGrid = new fieldButton[height][width]; //create array of buttonsGrid
                 grid = new GridPane(); //create new grid pane
                 grid.setAlignment(Pos.CENTER); //set it position on middle
                 grid.setPrefSize(930, 700); //preferable size
                 grid.setMaxSize(1770, 1070); //maximum size
 
-                for (int i = 0; i < height; i++) { //creating new buttons
+                for (int i = 0; i < height; i++) { //creating new buttonsGrid
                     for (int j = 0; j < width; j++) {
-                        buttons[i][j] = new Btn(new Button(game.get(i, j)), i, j);
-                        grid.add(buttons[i][j].b, j, i); //add this button to grid
+                        buttonsGrid[i][j] = new fieldButton(new Button(game.get(i, j)), i, j);
+                        grid.add(buttonsGrid[i][j].button, j, i); //add this button to grid
                     }
                 }
                 pane.getChildren().add(grid); //add our grid to StackPane
