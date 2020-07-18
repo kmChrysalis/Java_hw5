@@ -1,6 +1,6 @@
 package mines;
 
-import Ljavafx.fxml.FXML;
+import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
